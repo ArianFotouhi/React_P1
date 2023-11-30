@@ -1,5 +1,5 @@
 import MeetupList from "../components/meetups/MeetupList";
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 
 // const DUMMY_DATA = [
 //     {
@@ -26,19 +26,36 @@ function AllMeetupsPage(){
     const [isLoading, setIsLoading] = useState(true);
     const [loadedMeetups, setLoadedMeetups] = useState([]);
 
+    useEffect(() => {
+      setIsLoading(true);
+      fetch('https://react-meetups-bc0bf-default-rtdb.firebaseio.com/meetups.json')
+         .then(response => {
+            if (!response.ok) {
+               throw new Error('Failed to fetch meetups.');
+            }
+            return response.json();
+         })
+         .then(data => {
+            const meetups = [];
+            for (const key in data) {
+               const meetup = {
+                  id: key,
+                  ...data[key],
+               };
+               meetups.push(meetup);
+            }
+            setLoadedMeetups(meetups);
+            setIsLoading(false);
+         })
+         .catch(error => {
+            console.error('Error fetching meetups:', error.message);
+            setIsLoading(false);
+         });
+   }, []);
+   
 
     // GET request 
-    fetch(
-          'https://react-meetups-bc0bf-default-rtdb.firebaseio.com/meetups.json',
 
-      ).then(response =>{
-          return response.json();
-      }).then(
-        data => {
-          setIsLoading(false);
-          setLoadedMeetups(data);
-
-        });
 
       if(isLoading){
         return (
@@ -52,6 +69,7 @@ function AllMeetupsPage(){
     <section>
         <h1>All Meetups</h1>
         <MeetupList meetups={loadedMeetups} />
+        {/* <MeetupList meetups={DUMMY_DATA} /> */}
 
 
     </section>
