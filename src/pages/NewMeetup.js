@@ -1,6 +1,8 @@
 import NewMeetupForm from "../components/meetups/NewMeetupForm";
+import { useNavigate } from 'react-router-dom';
 
 function NewMeetupPage(){
+    const navigate = useNavigate();
 
     function addMeetupHandler(meetupData){
         /// /meetups.json creates a table named meetups (it's a firebase feature)
@@ -13,7 +15,9 @@ function NewMeetupPage(){
                     'Content-Type':'application/json'
                 }
             }
-         );
+         ).then(()=>{
+            navigate('/');
+         });
 
     }
 
