@@ -12,6 +12,7 @@
     font-size: 2rem;
     color: white;
     font-weight: bold;
+    margin: 1%;
   }
   
   .header ul {
@@ -23,7 +24,7 @@
   }
   
   .header li {
-    margin-left: 3rem;
+    margin:1rem;
   }
   
   .header a {
